@@ -85,18 +85,25 @@ function addNewRow(student) {
 // Save student from form
 function saveStudent() {
     var student = {
-        id: students.length + 1,
         name: document.getElementById('inputName').value,
         email: document.getElementById('inputEmail').value,
-        number: document.getElementById('inputNumber').value,
-        course: document.getElementById('selectCourses').value,
-        course_shift: document.querySelector('input[name="radioShift"]:checked').value
+        phone: document.getElementById('inputNumber').value,
+        idCurso: document.getElementById('selectCourses').value,
+        period: document.querySelector('input[name="radioShift"]:checked').value
     };
 
-    addNewRow(student);
-    students.push(student);
+    $.ajax({
+        url: "http://localhost:8080/students",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(student),
+        success: (response) => {
+            addNewRow(response);
+            students.push(response);
 
-    document.getElementById('form').reset();
+            document.getElementById('form').reset();
+        }
+    })
 }
 
 
