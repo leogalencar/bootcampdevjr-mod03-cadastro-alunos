@@ -11,7 +11,11 @@ import com.abutua.backend.models.Course;
 
 @RestController
 public class CourseController {
-    private List<Course> courses = Arrays.asList();
+    private List<Course> courses = Arrays.asList(
+        new Course(1, "Java"),
+        new Course(2, "Angular"),
+        new Course(3, "AWS")
+    );
 
     @GetMapping("courses")
     public ResponseEntity<List<Course>> getCourses() {

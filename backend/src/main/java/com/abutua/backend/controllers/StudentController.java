@@ -16,9 +16,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.abutua.backend.models.Student;
 
+import jakarta.annotation.PostConstruct;
+
 @RestController
 public class StudentController {
     private List<Student> students = new ArrayList<>();
+
+    @PostConstruct
+    private void initStudents() {
+        students.add(new Student(1, "Alice Johnson", "alice.johnson@example.com", "(11) 91234-5678", 1, 2));
+        students.add(new Student(2, "Bob Smith", "bob.smith@example.com", "(21) 97654-3210", 2, 3));
+        students.add(new Student(3, "Carol Williams", "carol.williams@example.com", "(31) 99876-5432", 3, 1));
+    }
 
     @GetMapping("students")
     public ResponseEntity<List<Student>> getStudents() {
@@ -28,8 +37,7 @@ public class StudentController {
     @GetMapping("students/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id) {
         Student student = students.stream().filter(s -> s.getId() == id).findFirst().orElseThrow(
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student Not Found")
-        );
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student Not Found"));
 
         return ResponseEntity.ok(student);
     }
@@ -40,10 +48,10 @@ public class StudentController {
         students.add(student);
 
         URI location = ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(student.getId())
-                        .toUri();
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(student.getId())
+                .toUri();
 
         return ResponseEntity.created(location).body(student);
     }
