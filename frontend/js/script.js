@@ -29,6 +29,12 @@ function loadCourses() {
         async: false,
         success: (response) => {
             courses = response;
+
+            const coursesSelect = document.getElementById("selectCourses");
+
+            for (let course of courses) {
+                coursesSelect.innerHTML += `<option value=${course.id}>${course.name}</option>`
+            }
         }
     })
 }
