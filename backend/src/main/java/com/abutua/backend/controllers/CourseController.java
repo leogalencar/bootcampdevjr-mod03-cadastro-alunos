@@ -4,12 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abutua.backend.models.Course;
 
 @RestController
+@CrossOrigin
 public class CourseController {
     private List<Course> courses = Arrays.asList(
         new Course(1, "Java"),

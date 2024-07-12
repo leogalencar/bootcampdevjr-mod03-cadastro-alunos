@@ -1,21 +1,8 @@
 // Objects
-var students = [
-    {
-        id: 1,
-        name: 'Leonardo Alencar',
-        email: 'teste@teste.com',
-        number: '(11) 99999-9999',
-        course: 2,
-        course_shift: 1
-    },
-];
+var students = [];
 
 
-var courses = [
-    { id: 1, name: 'Java'},
-    { id: 2, name: 'Angular'},
-    { id: 3, name: 'undefined'}
-];
+var courses = [];
 
 
 var shifts = [
@@ -30,14 +17,30 @@ $('#inputNumber').mask('(99) 99999-9999');
 
 
 // On load
+loadCourses();
 loadStudents();
 
 
 // Load all students
+function loadCourses() {
+    $.ajax({
+        url: "http://localhost:8080/courses",
+        type: "GET",
+        async: false,
+        success: (response) => {
+            courses = response;
+        }
+    })
+}
+
 function loadStudents() {
-    for (let student of students) {
-        addNewRow(student);
-    }
+    $.getJSON("http://localhost:8080/students", (response) => {
+        students = response;
+
+        for (let student of students) {
+            addNewRow(student);
+        }
+    })
 }
 
 
@@ -60,15 +63,15 @@ function addNewRow(student) {
     newRow.insertCell().appendChild(emailNode);
 
     // Insert student number
-    var numberNode = document.createTextNode(student.number);
+    var numberNode = document.createTextNode(student.phone);
     newRow.insertCell().appendChild(numberNode);
 
     // Insert student course
-    var courseNode = document.createTextNode(courses[student.course - 1].name);
+    var courseNode = document.createTextNode(courses[student.idCurso - 1].name);
     newRow.insertCell().appendChild(courseNode);
 
     // Insert student shift
-    var shiftNode = document.createTextNode(shifts[student.course_shift - 1].name);
+    var shiftNode = document.createTextNode(shifts[student.period - 1].name);
     newRow.insertCell().appendChild(shiftNode);
 }
 
